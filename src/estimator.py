@@ -1,164 +1,82 @@
 import math
 from pprint import pprint
-
-class Impact:
-    def __init__(self, reportedCases, days, totalHospitalBeds, avgDailyIncomeInUSD, avgDailyIncomeInPopulation):
-        self.reportedCases = reportedCases
-        self.days = days
-        self.totalHospitalBeds = totalHospitalBeds
-        self.avgDailyIncomeInUSD = avgDailyIncomeInUSD
-        self.avgDailyIncomeInPopulation = avgDailyIncomeInPopulation
-
-    def currentlyInfected(self):
-        infected = self.reportedCases * 10
-        return infected
-
-    def infectionsByRequestedTime(self):
-        currentlyInfected = self.currentlyInfected()
-        factors = daysToFactor(self.days)
-        infections = currentlyInfected * 2 ** factors
-        return infections
-
-    def severeCasesByRequestedTime(self):
-        infectionsByRequestedTime = self.infectionsByRequestedTime()
-        severeCases = math.trunc((0.15 * infectionsByRequestedTime))
-        return severeCases
-
-    def hospitalBedsByRequestedTime(self):
-        totalHospitalBeds = self.totalHospitalBeds
-        severeCasesByRequestedTime = self.severeCasesByRequestedTime()
-        hospitalBeds = totalHospitalBeds - (0.35 * severeCasesByRequestedTime)
-        hospitalBeds = math.trunc(hospitalBeds)
-        return hospitalBeds
-
-    def casesForICUByRequestedTime(self):
-        infectionsByRequestedTime = self.infectionsByRequestedTime()
-        casesForICU = 0.05 * infectionsByRequestedTime
-        casesForICU = math.trunc(casesForICU)
-        return casesForICU
-
-    def casesForVentilatorsByRequestedTime(self):
-        infectionsByRequestedTime = self.infectionsByRequestedTime()
-        casesForVentilators = 0.02 * infectionsByRequestedTime
-        casesForVentilators = math.trunc(casesForVentilators)
-        return casesForVentilators
-
-    def dollarsInFlight(self):
-        infectionsByRequestedTime = self.infectionsByRequestedTime()
-        avgDailyIncomeInPopulation = self.avgDailyIncomeInPopulation
-        avgDailyIncomeInUSD = self.avgDailyIncomeInUSD
-        days = self.days
-        dollars = round(infectionsByRequestedTime * avgDailyIncomeInPopulation * avgDailyIncomeInUSD * days, 2)
-        return dollars
-
-
-class SevereImpact:
-    def __init__(self, reportedCases, days, totalHospitalBeds, avgDailyIncomeInUSD, avgDailyIncomeInPopulation):
-        self.reportedCases = reportedCases
-        self.days = days
-        self.totalHospitalBeds = totalHospitalBeds
-        self.avgDailyIncomeInUSD = avgDailyIncomeInUSD
-        self.avgDailyIncomeInPopulation = avgDailyIncomeInPopulation
-
-    def currentlyInfected(self):
-        infected = self.reportedCases * 50
-        return infected
-
-    def infectionsByRequestedTime(self):
-        currentlyInfected = self.currentlyInfected()
-        factors = daysToFactor(self.days)
-        infections = currentlyInfected * 2 ** factors
-        return infections
-
-    def severeCasesByRequestedTime(self):
-        infectionsByRequestedTime = self.infectionsByRequestedTime()
-        severeCases = math.trunc((0.15 * infectionsByRequestedTime))
-        return severeCases
-
-    def hospitalBedsByRequestedTime(self):
-        totalHospitalBeds = self.totalHospitalBeds
-        severeCasesByRequestedTime = self.severeCasesByRequestedTime()
-        hospitalBeds = totalHospitalBeds - (0.35 * severeCasesByRequestedTime)
-        hospitalBeds = math.trunc(hospitalBeds)
-        return hospitalBeds
-
-    def casesForICUByRequestedTime(self):
-        infectionsByRequestedTime = self.infectionsByRequestedTime()
-        casesForICU = 0.05 * infectionsByRequestedTime
-        casesForICU = math.trunc(casesForICU)
-        return casesForICU
-
-    def casesForVentilatorsByRequestedTime(self):
-        infectionsByRequestedTime = self.infectionsByRequestedTime()
-        casesForVentilators = 0.02 * infectionsByRequestedTime
-        casesForVentilators = math.trunc(casesForVentilators)
-        return casesForVentilators
-
-    def dollarsInFlight(self):
-        infectionsByRequestedTime = self.infectionsByRequestedTime()
-        avgDailyIncomeInPopulation = self.avgDailyIncomeInPopulation
-        avgDailyIncomeInUSD = self.avgDailyIncomeInUSD
-        days = self.days
-        dollars = round(infectionsByRequestedTime * avgDailyIncomeInPopulation * avgDailyIncomeInUSD * days, 2)
-        return dollars
-
-
-def daysToFactor(days):
-    factors = days / 3
-    factors = math.trunc(factors)
-    return factors
-
-
-def dayFromPeriodType(periodType, timeToElapse):
-    if periodType == "days":
-        return timeToElapse
-    if periodType == "weeks":
-        return timeToElapse * 7
-    if periodType == "months":
-        return timeToElapse * 30
-
-
 def estimator(data):
-    inputData = data
-    reportedCases = data["reportedCases"]
-    timeToElapse = data["timeToElapse"]
-    periodType = data["periodType"]
-    totalHospitalBeds = data["totalHospitalBeds"]
-    avgDailyIncomeInUSD = data["region"]["avgDailyIncomeInUSD"]
-    avgDailyIncomeInPopulation = data["region"]["avgDailyIncomeInPopulation"]
+	# print(data['periodType'])
+	raw = data['periodType']
+	number = data['timeToElapse']
+	if raw =='days':
+		number = number
+	if raw  == 'months':
+		number = number*30
+	if raw == 'weeks':
+		number = number*7
+	print(number)
+	new = int(data['reportedCases']*10)
+	new2 = int(new*(2**(math.trunc(number/3))))
+	print(new2)
+	new3 = int((0.15*new2))
+	# hospital beds
+	availableBed =(0.35*data['totalHospitalBeds'])
+	# print(availableBed)
+	unavailableBed = int(availableBed - new3)
+	# print(unavailableBed)
+	# print(unavailableBed)
+	# icu
+	icu = (0.05*new2)
+	print(icu)
+	# ventilators
+	i_ventilators = int(0.02*new2)
+	# dollar in flight
+	averangedailyincome = data['region']['avgDailyIncomePopulation']
+	populationincome = data['region']['avgDailyIncomeInUSD']
+	days = number
+	dollars = int((new2*averangedailyincome*populationincome)/days)
+	# print(dollars)
+	impact = {'currentlyInfected': new,
+            'infectionsByRequestedTime':new2,
+			'severeCasesByRequestedTime':new3,
+			'hospitalBedsByRequestedTime':unavailableBed,
+			'casesForICUByRequestedTime': icu,
+			'casesForVentilatorsByRequestedTime':i_ventilators,
+			'dollarsInFlight':dollars}
+	"""  severe impacts code starts here!"""
+	currentlyInfected = int(data['reportedCases']*50)
+	infectionsByRequestedTime = int(currentlyInfected*(2**(math.trunc(number/3))))
+	severeCasesByRequestedTime = int((0.15*infectionsByRequestedTime))
+	# hospitalBeds
+	sunavailableBed = int(availableBed - severeCasesByRequestedTime)
+	# icu
+	s_icu = int(0.05*infectionsByRequestedTime)
+	# casesForVentilatorsByRequestedTime
+	ventilators = int(0.02*infectionsByRequestedTime)
+	# dollar in flight
+	saverangedailyincome = data['region']['avgDailyIncomePopulation']
+	spopulationincome = data['region']['avgDailyIncomeInUSD']
+	sdays = number
+	sdollars = int((infectionsByRequestedTime*saverangedailyincome*spopulationincome)/sdays)
+	severeImpact = {'currentlyInfected': currentlyInfected, 
+					'infectionsByRequestedTime':infectionsByRequestedTime,
+					'severeCasesByRequestedTime':severeCasesByRequestedTime,
+					'hospitalBedsByRequestedTime':sunavailableBed,
+					'casesForICUByRequestedTime': s_icu,
+					'casesForVentilatorsByRequestedTime':ventilators,
+					'dollarsInFlight':sdollars}
+	data = {'data':data,'impact':impact,'severeImpact':severeImpact}
+	pprint(data)
+	#print(impact,severeImpact)
+	return data
+data = {
+     "region":{
+         "name": "africa",
+         "avgAge":19.7,
+         "avgDailyIncomeInUSD":4,
+         "avgDailyIncomePopulation":0.73
+         } ,
+         "periodType":"days",
+         "timeToElapse": 38,
+         "reportedCases": 2747,
+         "population":92931687,
+         "totalHospitalBeds":678874
 
-    days = dayFromPeriodType(periodType, timeToElapse)
-    impact = Impact(reportedCases, days, totalHospitalBeds, avgDailyIncomeInUSD, avgDailyIncomeInPopulation)
-    severeImpact = SevereImpact(reportedCases, days, totalHospitalBeds, avgDailyIncomeInUSD, avgDailyIncomeInPopulation)
-
-    impactData = \
-        {
-            "currentlyInfected": impact.currentlyInfected(),
-            "infectionsByRequestedTime": impact.infectionsByRequestedTime(),
-            "severeCasesByRequestedTime": impact.severeCasesByRequestedTime(),
-            "hospitalBedsByRequestedTime": impact.hospitalBedsByRequestedTime(),
-            "casesForICUByRequestedTime": impact.casesForICUByRequestedTime(),
-            "casesForVentilatorsByRequestedTime": impact.casesForVentilatorsByRequestedTime(),
-            "dollarsInFlight": impact.dollarsInFlight()
-        }
-    severeImpactData = \
-        {
-            "currentlyInfected": severeImpact.currentlyInfected(),
-            "infectionsByRequestedTime": severeImpact.infectionsByRequestedTime(),
-            "severeCasesByRequestedTime": severeImpact.severeCasesByRequestedTime(),
-            "hospitalBedsByRequestedTime": severeImpact.hospitalBedsByRequestedTime(),
-            "casesForICUByRequestedTime": severeImpact.casesForICUByRequestedTime(),
-            "casesForVentilatorsByRequestedTime": severeImpact.casesForVentilatorsByRequestedTime(),
-            "dollarsInFlight": severeImpact.dollarsInFlight()
-        }
-
-    data = \
-        {
-            "data":inputData,
-			"estimate":{
-				"impact": impactData,
-				"severeImpact": severeImpactData
-			}
-        }
-    return data
- 
+      }
+estimator(data)
