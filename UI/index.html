@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="developer:Victor Waliaula: novel covid19 infections estimator is a web app;
+                that captures data to be submitted to the estimator for stimation results.">
+    <title>Covid19 | estimator</title>
+    <!--bootsrap css -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css">  
+    <!-- main css -->
+    <link rel="stylesheet" href="css/main.css">
+ 
+</head>
+<style>
+    
+</style>
+<body>
+
+        <div class="container-fluid mt-1">
+            <header class="text-center text-white bg-info p-3">
+                <h1>Novelty Covid19 Infections Estimator</h1>
+            </header>
+
+            <nav class="text-center bg-dark mt-3">               
+                <ul class="list-unstyled d-inline-flex my-2" id="navLinks">
+                    <li class="mx-3"><a class="link" href="#">home</a></li>
+                    <li class="mx-3"><a class="link" href="#">about covid19</a></li>
+                    <li class="mx-3"><a class="link" href="#">safety measures</a></li>
+                    <li class="mx-3"><a class="link" href="#">hotline</a></li>
+                </ul>
+            </nav>
+         </div>
+         
+         <div class="jumbotron w-75 mt-4 py-2 mb-3">
+            <p class="text-center"><b class="text-dark">FILL THE FORM BELOW</b></p>
+            <div class="container-fluid w-75 m-auto">
+                <form class="forms mt-2">
+                    <div class="form-group">
+                       <label for="data-population"><b>Population:</b></label>
+                       <input type="text" class="form-control" id="data-population" required>
+                    </div>
+                    <div class="form-group">
+                       <label for="data-time-to-elaps"><b>Time to elapse:</b></label>
+                       <input type="number" class="form-control" id="data-time-to-elaps" required><b
+                    </div>
+                    <div class="form-group">
+                       <label for="data-reported-cases">Reported Cases:</label>
+                       <input type="text" class="form-control" id="data-reported-cases" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="data-total-hospital-beds">Total hospital beds:</label>
+                        <input type="text" id="data-total-hospital-beds" class="form-control" required>
+                     </div>
+                    <div class="form-group">
+                       <label for="period">Period type:</label>
+                       <select id="period" class="form-control">
+                        <option value="days"class="disabled">--Select--</option>
+                           <option value="days">Days</option>
+                           <option value="weeks">Weeks</option>
+                           <option value="Months">Months</option>
+                       </select>
+                    </div>                 
+                    <div class="form-group text-right">
+                        <input type="submit"class="btn btn-dark btn-block" id="data-go-estimate" value="submit"> 
+                    </div>  
+                </form>
+            </div>             
+         </div>
+</body>
+</html>

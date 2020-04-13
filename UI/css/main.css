@@ -1,0 +1,33 @@
+ /*this is the styling for page*/
+ body{
+     font-family: 'Arial',  sans-serif;
+     
+ }
+
+ul.main_menu{
+    margin-top: 15px;
+}
+.main_menu li{
+    display: inline;
+    padding: 0 10px 0 10px;
+    font-size: 16px;
+    
+}
+.main_menu a{
+    text-decoration: none;
+    color: #fff;
+    padding: 8px;
+    font-variant: small-caps;
+}
+.link{
+    color: #fff;
+}
+.link:hover{
+    text-decoration: none;
+    color: #59d5d8;       
+}
+
+.jumbotron{
+    margin: 0 auto;
+    max-width: 750px;
+}
